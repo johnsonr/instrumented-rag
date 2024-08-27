@@ -7,12 +7,14 @@
 </head>
 <body>
 <h1>Chat Messages</h1>
-<button hx-get="/messages?htmx=true" hx-target="#messageList" hx-swap="innerHTML">Load Messages</button>
 
 <div id="messageList">
     <ul th:replace="~{fragments :: messageList}">
         <!-- This will be replaced by the actual message list -->
     </ul>
 </div>
+
+<button hx-get="/messages?htmx=true" hx-target="#messageList" hx-swap="innerHTML">Load Messages</button>
+
 </body>
 </html>

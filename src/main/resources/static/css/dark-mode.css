@@ -1,3 +1,4 @@
+/* File: src/main/resources/static/css/dark-mode.css */
 
 body {
     font-family: Arial, sans-serif;
@@ -32,8 +33,36 @@ ul {
 }
 
 li {
-    background-color: #2d2d2d;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+
+li.user {
+    background-color: #2d2d2d;
+    text-align: right;
+}
+
+li.assistant {
+    background-color: #3700b3;
+    text-align: left;
+}
+
+.message-type {
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+li.user .message-type {
+    color: #bb86fc;
+}
+
+li.assistant .message-type {
+    color: #03dac6;
+}
+
+li p {
+    margin: 5px 0 0 0;
 }

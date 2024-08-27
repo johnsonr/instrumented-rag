@@ -1,5 +1,8 @@
 package springrod.localrag
 
+import org.springframework.ai.chat.messages.AssistantMessage
+import org.springframework.ai.chat.messages.Message
+import org.springframework.ai.chat.messages.UserMessage
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,8 +24,10 @@ class ChatMessageController {
         }
     }
 
-    private val messagesFromService: List<String>
-        get() = generateRandomStrings(10, 10)
+    private val messagesFromService: List<Message>
+        get() = generateRandomStrings(5, 20).mapIndexed { index, it ->
+            if (index % 2 == 1) UserMessage(it) else AssistantMessage(it)
+        }
 }
 
 fun generateRandomStrings(count: Int, length: Int): List<String> {
