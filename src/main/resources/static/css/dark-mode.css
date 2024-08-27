@@ -48,6 +48,11 @@ li.assistant {
     text-align: left;
 }
 
+input.userMessage {
+    width: 80%;
+    padding: 8px;
+}
+
 .message-type {
     font-weight: bold;
     text-transform: capitalize;

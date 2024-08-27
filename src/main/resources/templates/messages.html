@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Chat Messages</title>
+    <title>Local Chat</title>
     <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+
+    <script>
+        function handleAfterRequest(event) {
+            let userMessage = document.getElementById('messageInput').value;
+            document.getElementById('messageInput').value = '';
+            htmx.ajax('POST', '/respond', {target: '#messageList', values: {message: userMessage}});
+        }
+    </script>
+
     <link rel="stylesheet" href="/css/dark-mode.css">
 </head>
 <body>
-<h1>Chat Messages</h1>
+<h1>Local Chat</h1>
 
 <div id="messageList">
     <ul th:replace="~{fragments :: messageList}">
@@ -14,7 +23,22 @@
     </ul>
 </div>
 
-<button hx-get="/messages?htmx=true" hx-target="#messageList" hx-swap="innerHTML">Load Messages</button>
+<!--<button hx-get="/messages?htmx=true" hx-target="#messageList" hx-swap="innerHTML">Load Messages</button>-->
 
+<div style="position: fixed; bottom: 0; width: 100%; background-color: #f1f1f1; padding: 10px;">
+    <form
+            hx-put="/messages" hx-target="#messageList"
+            hx-on="htmx:afterRequest: handleAfterRequest(event)"
+    >
+        <input
+                id="messageInput"
+                type="text"
+                name="message"
+                placeholder="Type your message here..."
+                th:class="userMessage"
+        />
+        <button type="submit" style="padding: 8px;">Send</button>
+    </form>
+</div>
 </body>
 </html>
