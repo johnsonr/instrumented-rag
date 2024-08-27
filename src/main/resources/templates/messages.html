@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Chat Messages</title>
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+    <link rel="stylesheet" href="/css/dark-mode.css">
+</head>
+<body>
+<h1>Chat Messages</h1>
+<button hx-get="/messages?htmx=true" hx-target="#messageList" hx-swap="innerHTML">Load Messages</button>
+
+<div id="messageList">
+    <ul th:replace="~{fragments :: messageList}">
+        <!-- This will be replaced by the actual message list -->
+    </ul>
+</div>
+</body>
+</html>

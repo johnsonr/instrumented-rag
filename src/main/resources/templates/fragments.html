@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <ul th:fragment="messageList">
+        <li th:each="message : ${messages}" th:text="${message}"></li>
+    </ul>
+</body>
+</html>
