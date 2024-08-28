@@ -4,6 +4,7 @@ import org.springframework.ai.chat.memory.ChatMemory
 import org.springframework.ai.chat.memory.InMemoryChatMemory
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.embedding.EmbeddingModel
+import org.springframework.ai.ollama.OllamaChatModel
 import org.springframework.ai.ollama.OllamaEmbeddingModel
 import org.springframework.ai.ollama.api.OllamaApi
 import org.springframework.ai.ollama.api.OllamaOptions
@@ -12,6 +13,7 @@ import org.springframework.ai.openai.api.OpenAiApi
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 
 /**
  * Explicit configuration for the chat application.
@@ -25,14 +27,26 @@ class ChatConfiguration {
         return InMemoryChatMemory()
     }
 
+    @Primary
     @Bean
-    fun chatModel(@Value("\${OPENAI_API_KEY}") apiKey: String): ChatModel {
+    fun premiumChatModel(@Value("\${OPENAI_API_KEY}") apiKey: String): ChatModel {
         return OpenAiChatModel(OpenAiApi(apiKey))
     }
 
     @Bean
+    fun localChatModel(@Value("\${OPENAI_API_KEY}") apiKey: String): OllamaChatModel {
+        return OllamaChatModel(
+            OllamaApi(),
+            OllamaOptions.builder()
+                .withModel("gemma2:2b")
+                .build()
+        )
+    }
+
+    @Bean
     fun embeddingModel(): EmbeddingModel {
-        return OllamaEmbeddingModel(OllamaApi(),
+        return OllamaEmbeddingModel(
+            OllamaApi(),
             OllamaOptions.builder()
                 .withModel("gemma2:2b")
                 .build()

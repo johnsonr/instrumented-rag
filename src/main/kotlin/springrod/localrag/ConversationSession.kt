@@ -1,5 +1,7 @@
 package springrod.localrag
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.ai.chat.memory.ChatMemory
 import org.springframework.ai.chat.messages.Message
 import org.springframework.core.io.ClassPathResource
@@ -27,6 +29,12 @@ class ConversationSession(
     nameGenerator: NameGenerator = MobyNameGenerator,
 ) {
 
+    private val logger: Logger = LoggerFactory.getLogger(ConversationSession::class.java)
+
+    private var promptPath = "prompts/pretentious_system.md"
+
+    var direction: String = ""
+
     val conversationId: String = nameGenerator.generateName()
 
     fun messages(): List<Message> {
@@ -34,6 +42,21 @@ class ConversationSession(
     }
 
     fun promptResource(): Resource {
-        return ClassPathResource("prompts/pretentious_system.md")
+        return if (direction.isBlank()) {
+            logger.info("Prompting with $promptPath")
+            ClassPathResource(promptPath)
+        } else {
+            logger.info("Prompting with prompts/obedient_system.md to follow directions")
+            ClassPathResource("prompts/obedient_system.md")
+        }
+    }
+
+    fun obeyDirection(direction: String) {
+        logger.info("Obeying direction: $direction")
+        this.direction = direction
+    }
+
+    fun clearDirection() {
+        this.direction = ""
     }
 }
