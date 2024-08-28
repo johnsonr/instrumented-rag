@@ -1,0 +1,81 @@
+/* File: src/main/resources/static/css/dark-mode.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+h1 {
+    color: #bb86fc;
+}
+
+button {
+    background-color: #3700b3;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #6200ee;
+}
+
+#messageList {
+    margin-top: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+li.user {
+    background-color: #2d2d2d;
+    text-align: right;
+}
+
+li.assistant {
+    background-color: #3700b3;
+    text-align: left;
+}
+
+input.userMessage {
+    width: 80%;
+    padding: 8px;
+}
+
+div.input {
+    /*position: fixed;*/
+    bottom: 0;
+    width: 100%;
+    background-color: #665f70;
+    padding: 10px;
+}
+
+.message-type {
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+li.user .message-type {
+    color: #bb86fc;
+}
+
+li.assistant .message-type {
+    color: #03dac6;
+}
+
+li p {
+    margin: 5px 0 0 0;
+}

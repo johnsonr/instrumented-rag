@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class LocalragApplication
+class LocalRagApplication
 
 fun main(args: Array<String>) {
-	runApplication<LocalragApplication>(*args)
+	runApplication<LocalRagApplication>(*args)
 }

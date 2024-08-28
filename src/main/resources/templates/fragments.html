@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<ul th:fragment="messageList">
+    <li th:each="message : ${messages}" th:class="${message.messageType.value}">
+        <span class="message-type" th:text="${message.messageType}"></span>
+        <p th:text="${message.content}"></p>
+    </li>
+</ul>
+</body>
