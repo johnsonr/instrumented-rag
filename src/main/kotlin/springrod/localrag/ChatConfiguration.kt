@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
+import org.springframework.context.event.EventListener
+import springrod.localrag.advisors.NotedMentionEvent
 
 /**
  * Explicit configuration for the chat application.
@@ -49,5 +51,10 @@ class ChatConfiguration {
                 .withModel("gemma2:2b")
                 .build()
         )
+    }
+
+    @EventListener
+    fun applicationEventListener(notedMentionEvent: NotedMentionEvent) {
+        println("Noted mention of ${notedMentionEvent.what} in ${notedMentionEvent.fullText}")
     }
 }

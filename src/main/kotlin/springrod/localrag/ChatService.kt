@@ -11,8 +11,10 @@ import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.ollama.OllamaChatModel
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import springrod.localrag.advisors.CaptureMemoryAdvisor
+import springrod.localrag.advisors.NoteMentionsAdvisor
 import java.util.concurrent.Executor
 
 @Service
@@ -21,6 +23,7 @@ class ChatService(
     private val localChatModel: OllamaChatModel,
     private val vectorStore: VectorStore,
     private val executor: Executor,
+    private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
 
     private fun chatClientFor(conversationSession: ConversationSession): ChatClient {
@@ -32,6 +35,10 @@ class ChatService(
                     vectorStore = vectorStore,
                     chatModel = localChatModel,
                     executor = executor,
+                ),
+                NoteMentionsAdvisor(
+                    whatToNote = "Spring",
+                    applicationEventPublisher = applicationEventPublisher,
                 ),
                 QuestionAnswerAdvisor(
                     vectorStore,
