@@ -19,15 +19,15 @@ import org.springframework.stereotype.Service
 
 @Service
 class ChatService(
-    private val chatModel: ChatModel,
-    private val vectorStore: VectorStore,
-    private val chatMemory: ChatMemory,
+    chatModel: ChatModel,
+    vectorStore: VectorStore,
+    chatMemory: ChatMemory,
 ) {
 
     private val chatClient = ChatClient
         .builder(chatModel)
-        .defaultOptions(OllamaOptions()
-            .withModel("llama3.1"))
+//        .defaultOptions(OllamaOptions()
+//            .withModel("llama3.1"))
         .defaultSystem("""
                 You are a helpful knowledge retrieval agent.
                 If you don't know the answer you say so, rather than guessing.
