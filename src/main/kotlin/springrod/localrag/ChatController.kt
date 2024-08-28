@@ -26,7 +26,7 @@ internal class ChatController(
             "fragments :: messageList"  // Return only the fragment for HTMX requests
         } else {
             model.addAttribute("conversationId", conversionSession.conversationId)
-            "messages"  // Return the full page for direct navigation
+            "messages"  // Return the full page
         }
     }
 
@@ -44,7 +44,7 @@ internal class ChatController(
     @PostMapping("/respond")
     fun respond(message: String, model: Model): String {
         logger.info("Asking model to reply in conversation '${conversionSession.conversationId}': ${conversionSession.messages().size} so far")
-        val chatResponse = chatService.respond(conversionSession, message)
+        chatService.respondToUserMessage(conversionSession, message)
         model.addAttribute("messages", conversionSession.messages())
         return "fragments :: messageList"
     }

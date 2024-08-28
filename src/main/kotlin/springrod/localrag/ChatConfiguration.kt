@@ -19,7 +19,7 @@ import springrod.localrag.advisors.NotedMentionEvent
 
 /**
  * Explicit configuration for the chat application.
- * Starters make it hard to vary things.
+ * Starters can make it hard to vary things.
  */
 @Configuration
 class ChatConfiguration {
@@ -55,6 +55,6 @@ class ChatConfiguration {
 
     @EventListener
     fun applicationEventListener(notedMentionEvent: NotedMentionEvent) {
-        println("Noted mention of ${notedMentionEvent.what} in ${notedMentionEvent.fullText}")
+        println("!!!!!!!!!! Noted mention of ${notedMentionEvent.what} in ${notedMentionEvent.fullText}")
     }
 }

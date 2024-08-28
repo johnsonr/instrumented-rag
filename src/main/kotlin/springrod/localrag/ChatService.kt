@@ -26,7 +26,10 @@ class ChatService(
     private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
 
-    private fun chatClientFor(conversationSession: ConversationSession): ChatClient {
+    /**
+     * Some advisors depend on session state
+     */
+    private fun chatClientForSession(conversationSession: ConversationSession): ChatClient {
         return ChatClient
             .builder(chatModel)
             .defaultAdvisors(
@@ -44,21 +47,22 @@ class ChatService(
                     vectorStore,
                     SearchRequest.defaults().withSimilarityThreshold(.8)
                 ),
+                // Edit application.properties to show log messages from this advisor
                 SimpleLoggerAdvisor(),
             )
             .defaultSystem(conversationSession.promptResource())
             .build()
     }
 
-    fun respond(
+    fun respondToUserMessage(
         conversationSession: ConversationSession,
-        message: String,
+        userMessage: String,
     ): ChatResponse {
-        val chatResponse = chatClientFor(conversationSession)
+        val chatResponse = chatClientForSession(conversationSession)
             .prompt()
             .advisors { it.param(CHAT_MEMORY_CONVERSATION_ID_KEY, conversationSession.conversationId) }
             .advisors { it.param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 50) }
-            .user(message)
+            .user(userMessage)
             .call()
             .chatResponse()
         return chatResponse

@@ -20,6 +20,6 @@ class ChatServiceTest {
 
     @Test
     fun testThing() {
-        chatService.respond("1", "Hello")
+        chatService.respondToUserMessage("1", "Hello")
     }
 }

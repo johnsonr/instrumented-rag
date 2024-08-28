@@ -51,7 +51,9 @@ class CaptureMemoryAdvisor(
     private val kotlinAwareObjectMapper = ObjectMapper().registerKotlinModule()
 
     /**
-     * We don't change the request, we merely look at it
+     * We don't change the request, we merely look at it.
+     * We perform the additional model call in the background so that
+     * we can reply to the user without delay.
      */
     override fun adviseRequest(request: AdvisedRequest, context: MutableMap<String, Any>): AdvisedRequest {
         // Allow for flaky model

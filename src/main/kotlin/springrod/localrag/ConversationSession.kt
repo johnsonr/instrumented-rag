@@ -20,6 +20,11 @@ val RandomNameGenerator = NameGenerator {
     UUID.randomUUID().toString()
 }
 
+/**
+ * Session scoped object to hold conversation id for
+ * Spring AI ChatMemory and system prompt,
+ * which may change over time.
+ */
 @Component
 @SessionScope
 class ConversationSession(

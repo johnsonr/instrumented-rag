@@ -9,12 +9,18 @@ data class NotedMentionEvent(
     val fullText: String,
 )
 
+/**
+ * Note mention of a particular string in the user text
+ */
 class NoteMentionsAdvisor(
     private val whatToNote: String,
     private val applicationEventPublisher: ApplicationEventPublisher,
 ) : RequestResponseAdvisor {
 
-    override fun adviseRequest(request: AdvisedRequest, context: MutableMap<String, Any>): AdvisedRequest {
+    override fun adviseRequest(
+        request: AdvisedRequest,
+        context: MutableMap<String, Any>,
+    ): AdvisedRequest {
         if (request.userText.contains(whatToNote, ignoreCase = true)) {
             applicationEventPublisher.publishEvent(
                 NotedMentionEvent(what = whatToNote, fullText = request.userText)
