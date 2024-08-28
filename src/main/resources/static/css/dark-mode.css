@@ -53,6 +53,14 @@ input.userMessage {
     padding: 8px;
 }
 
+div.input {
+    /*position: fixed;*/
+    bottom: 0;
+    width: 100%;
+    background-color: #540a0a;
+    padding: 10px;
+}
+
 .message-type {
     font-weight: bold;
     text-transform: capitalize;

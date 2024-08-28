@@ -27,7 +27,7 @@ class ChatService(
     private val chatClient = ChatClient
         .builder(chatModel)
         .defaultOptions(OllamaOptions()
-            .withModel("gemma2"))
+            .withModel("llama3.1"))
         .defaultSystem("""
                 You are a helpful knowledge retrieval agent.
                 If you don't know the answer you say so, rather than guessing.

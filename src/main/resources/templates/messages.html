@@ -25,7 +25,7 @@
 
 <!--<button hx-get="/messages?htmx=true" hx-target="#messageList" hx-swap="innerHTML">Load Messages</button>-->
 
-<div style="position: fixed; bottom: 0; width: 100%; background-color: #f1f1f1; padding: 10px;">
+<div class="input">
     <form
             hx-put="/messages" hx-target="#messageList"
             hx-on="htmx:afterRequest: handleAfterRequest(event)"
