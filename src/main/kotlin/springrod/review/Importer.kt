@@ -18,7 +18,7 @@ data class Review(
     val title: String,
     val text: String,
     val asin: String,
-    val userId: String,
+    val userId: String?,
     val verifiedPurchase : Boolean,
     @Id @GeneratedValue val id: Long? = null,
 )

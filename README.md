@@ -6,3 +6,8 @@ Run Ollama separately on your machine.
 
 Use the Docker Compose file in this project to run Neo,
 or otherwise change the Neo credentials in `application.properties`.
+
+
+Source of reviews:
+
+https://amazon-reviews-2023.github.io/
