@@ -23,9 +23,7 @@ import org.springframework.context.annotation.Primary
 class ChatConfiguration {
 
     @Bean
-    fun chatMemory(): ChatMemory {
-        return InMemoryChatMemory()
-    }
+    fun chatMemory(): ChatMemory = InMemoryChatMemory()
 
     @Primary
     @Bean
@@ -34,7 +32,7 @@ class ChatConfiguration {
     }
 
     @Bean
-    fun localChatModel(@Value("\${OPENAI_API_KEY}") apiKey: String): OllamaChatModel {
+    fun localChatModel(): OllamaChatModel {
         return OllamaChatModel(
             OllamaApi(),
             OllamaOptions.builder()

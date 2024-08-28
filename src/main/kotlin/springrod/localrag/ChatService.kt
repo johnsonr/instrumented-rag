@@ -36,7 +36,6 @@ class ChatService(
                 ),
                 SimpleLoggerAdvisor(),
             )
-            // Do it late as it may have been set by an advisor
             .defaultSystem(conversationSession.promptResource())
             .build()
     }
@@ -49,7 +48,6 @@ class ChatService(
             .prompt()
             .advisors { it.param(CHAT_MEMORY_CONVERSATION_ID_KEY, conversationSession.conversationId) }
             .advisors { it.param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 50) }
-            .advisors { it.param("direction", conversationSession.direction) }
             .user(message)
             .call()
             .chatResponse()
