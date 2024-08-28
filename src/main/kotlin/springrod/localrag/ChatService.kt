@@ -13,12 +13,14 @@ import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.stereotype.Service
 import springrod.localrag.advisors.CaptureMemoryAdvisor
+import java.util.concurrent.Executor
 
 @Service
 class ChatService(
     private val chatModel: ChatModel,
     private val localChatModel: OllamaChatModel,
     private val vectorStore: VectorStore,
+    private val executor: Executor,
 ) {
 
     private fun chatClientFor(conversationSession: ConversationSession): ChatClient {
@@ -29,6 +31,7 @@ class ChatService(
                 CaptureMemoryAdvisor(
                     vectorStore = vectorStore,
                     chatModel = localChatModel,
+                    executor = executor,
                 ),
                 QuestionAnswerAdvisor(
                     vectorStore,

@@ -16,6 +16,7 @@ import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.core.io.ClassPathResource
 import org.springframework.retry.support.RetryTemplate
 import org.springframework.retry.support.RetryTemplateBuilder
+import java.util.concurrent.Executor
 
 /**
  * Returns what we need to extract memories from,
@@ -33,6 +34,7 @@ val lastMessageMemoryBasisExtractor: MemoryBasisExtractor = {
 class CaptureMemoryAdvisor(
     private val vectorStore: VectorStore,
     chatModel: ChatModel,
+    private val executor: Executor,
     private val memoryBasisExtractor: MemoryBasisExtractor = lastMessageMemoryBasisExtractor,
     private val retryTemplate: RetryTemplate =
         RetryTemplateBuilder().maxAttempts(3).fixedBackoff(1000).build()
@@ -53,14 +55,16 @@ class CaptureMemoryAdvisor(
      */
     override fun adviseRequest(request: AdvisedRequest, context: MutableMap<String, Any>): AdvisedRequest {
         // Allow for flaky model
-        try {
-            retryTemplate.execute<Boolean, Throwable> {
-                extractMemoryIfPossible(request)
+        val backgroundTask = Runnable {
+            try {
+                retryTemplate.execute<Boolean, Throwable> {
+                    extractMemoryIfPossible(request)
+                }
+            } catch (t: Throwable) {
+                logger.error("We tried really hard but the model kept failing. Don't fail the advisor chain", t)
             }
-        } catch (t: Throwable) {
-            logger.error("We tried really hard but the model kept failing. Don't fail the advisor chain", t)
         }
-
+        executor.execute(backgroundTask)
         return request
     }
 
