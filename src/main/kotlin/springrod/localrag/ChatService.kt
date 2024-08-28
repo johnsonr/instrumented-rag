@@ -2,8 +2,11 @@ package springrod.localrag
 
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
+import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor
 import org.springframework.ai.chat.memory.ChatMemory
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.chat.model.ChatResponse
@@ -23,13 +26,18 @@ class ChatService(
 
     private val chatClient = ChatClient
         .builder(chatModel)
-        .defaultOptions(OllamaOptions().withModel("gemma2:2b"))
+        .defaultOptions(OllamaOptions()
+            .withModel("gemma2"))
         .defaultSystem("""
-                You speak like a dog
+                You are a helpful knowledge retrieval agent.
+                If you don't know the answer you say so, rather than guessing.
+                You will reply from the context you're given rather than your training data.
             """.trimIndent())
         .defaultAdvisors(
-            PromptChatMemoryAdvisor(chatMemory),
-            QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults())
+            MessageChatMemoryAdvisor(chatMemory),
+            QuestionAnswerAdvisor(vectorStore,
+                SearchRequest.defaults().withSimilarityThreshold(.5)),
+            SimpleLoggerAdvisor(),
         )
         .build()
 
@@ -37,6 +45,8 @@ class ChatService(
         val chatResponse = chatClient
             .prompt()
             .advisors { it.param(CHAT_MEMORY_CONVERSATION_ID_KEY, conversationId) }
+            .advisors { it.param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 50) }
+
             .user(message)
             .call()
             .chatResponse()
