@@ -71,6 +71,14 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+        <!-- This is just silly fun for generating conversation names -->
+        <!-- https://mvnrepository.com/artifact/info.schnatterer.moby-names-generator/moby-names-generator -->
+        <dependency>
+            <groupId>info.schnatterer.moby-names-generator</groupId>
+            <artifactId>moby-names-generator</artifactId>
+            <version>20.10.1-r0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-neo4j</artifactId>
