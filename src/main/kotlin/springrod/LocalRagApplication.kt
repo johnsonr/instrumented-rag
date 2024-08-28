@@ -1,4 +1,4 @@
-package springrod.localrag
+package springrod
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
