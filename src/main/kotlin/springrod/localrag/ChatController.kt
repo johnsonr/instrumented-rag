@@ -2,44 +2,14 @@ package springrod.localrag
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.ai.chat.memory.ChatMemory
-import org.springframework.ai.chat.messages.Message
 import org.springframework.ai.chat.messages.UserMessage
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.context.annotation.SessionScope
-import java.util.*
 
-fun interface NameGenerator {
-    fun generateName(): String
-}
-
-val MobyNameGenerator = NameGenerator {
-    info.schnatterer.mobynamesgenerator.MobyNamesGenerator.getRandomName()
-}
-
-val RandomNameGenerator = NameGenerator {
-    UUID.randomUUID().toString()
-}
-
-@Component
-@SessionScope
-internal class ConversationSession(
-    private val chatMemory: ChatMemory,
-    nameGenerator: NameGenerator = MobyNameGenerator,
-) {
-
-    val conversationId: String = nameGenerator.generateName()
-
-    fun messages(): List<Message> {
-        return chatMemory.get(conversationId, 100)
-    }
-}
 
 @Controller
 internal class ChatController(
@@ -73,8 +43,8 @@ internal class ChatController(
 
     @PostMapping("/respond")
     fun respond(message: String, model: Model): String {
-        logger.info("Asking model to reply in conversation '${conversionSession.conversationId}': messages are '${conversionSession.messages()}'")
-        val chatResponse = chatService.respond(conversionSession.conversationId, message)
+        logger.info("Asking model to reply in conversation '${conversionSession.conversationId}': ${conversionSession.messages().size} so far")
+        val chatResponse = chatService.respond(conversionSession, message)
         model.addAttribute("messages", conversionSession.messages())
         return "fragments :: messageList"
     }
