@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Local Chat</title>
     <script src="https://unpkg.com/htmx.org@1.9.3"></script>
@@ -12,10 +12,14 @@
         }
     </script>
 
-    <link rel="stylesheet" href="/css/dark-mode.css">
+    <link href="/css/dark-mode.css" rel="stylesheet">
 </head>
 <body>
 <h1>Local Chat</h1>
+
+<div>
+    <p th:text="${conversationId}">Conversation</p>
+</div>
 
 <div id="messageList">
     <ul th:replace="~{fragments :: messageList}">
@@ -23,21 +27,19 @@
     </ul>
 </div>
 
-<!--<button hx-get="/messages?htmx=true" hx-target="#messageList" hx-swap="innerHTML">Load Messages</button>-->
-
 <div class="input">
     <form
-            hx-put="/messages" hx-target="#messageList"
-            hx-on="htmx:afterRequest: handleAfterRequest(event)"
+            hx-on="htmx:afterRequest: handleAfterRequest(event)" hx-put="/messages"
+            hx-target="#messageList"
     >
         <input
                 id="messageInput"
-                type="text"
                 name="message"
                 placeholder="Type your message here..."
                 th:class="userMessage"
+                type="text"
         />
-        <button type="submit" style="padding: 8px;">Send</button>
+        <button style="padding: 8px;" type="submit">Send</button>
     </form>
 </div>
 </body>
