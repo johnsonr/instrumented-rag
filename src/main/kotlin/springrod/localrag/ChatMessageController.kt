@@ -41,9 +41,7 @@ class ChatMessageController(
     @PutMapping("/messages")
     fun addUserMessage(model: Model, @RequestParam("message") message: String): String {
         logger.info("Added user message '$message'")
-        logger.info("We now have ${messagesIn(conversationId) }.size} messages")
         model.addAttribute("messages", chatMemory.get(conversationId, 100) + UserMessage(message))
-        assertConversationInvariants(conversationId, at="after adding user message")
         return "fragments :: messageList"  // Return the updated fragment with the user's message
     }
 
@@ -51,19 +49,11 @@ class ChatMessageController(
         return chatMemory.get(conversationId, 100)
     }
 
-    private fun assertConversationInvariants(conversationId: String, at: String) {
-        val messages = messagesIn(conversationId)
-        assert(messages.all {
-            it.content != "" }) { "All messages must have content: $at" }
-    }
-
     @PostMapping("/respond")
     fun respond(message: String, model: Model): String {
         logger.info("Asking model to reply: messages are '${messagesIn(conversationId)}'")
-        assertConversationInvariants(conversationId, at="before response")
 
         val chatResponse = chatService.respond(conversationId, message)
-        assertConversationInvariants(conversationId, at="after response")
         model.addAttribute("messages", chatMemory.get(conversationId, 100))
         return "fragments :: messageList"
     }

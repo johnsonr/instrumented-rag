@@ -7,8 +7,9 @@ import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.ai.chat.memory.ChatMemory
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.chat.model.ChatResponse
-import org.springframework.ai.chat.prompt.Prompt
+import org.springframework.ai.document.DocumentReader
 import org.springframework.ai.ollama.api.OllamaOptions
+import org.springframework.ai.reader.TextReader
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.stereotype.Service
