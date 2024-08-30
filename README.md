@@ -8,18 +8,20 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
 
-Kotlin project demonstrating Spring AI with Ollama, Open AI and Neo4j.
+Kotlin project with a simple [HTMX](https://htmx.org/) UI, demonstrating Spring AI with Ollama, Open AI and Neo4j.
 Shows:
 
-- Mixing LLMs in a single application. **Use the right LLM for each call.**
-- The power of Spring AI advisors to instrument chats in a reusable way
-- The power of integration with the Spring context.
+- Mixing LLMs in a single application. **Use the right LLM for each requirement.**
+- The power of [Spring AI](https://github.com/spring-projects/spring-ai) advisors to instrument chats in a reusable way
+- The power of integrating LLM calls within a Spring application.
 
 This project features the following custom advisors:
 
 - `CaptureMemoryAdvisor`: Simple take on the ChatGPT concept of capturing memories. Uses a small model (`gemma2:2b` by
-  default) to try to find useful memories in the latest user message. If it finds them it saves a Document to the
-  `VectorStore` so it can be indexed in this or future chats.
+  default) to try to find useful memories in the latest user message. When it finds one it saves a Document to the
+  `VectorStore` so it can be brought into the context in this or future chats. So if you tell the bot your favorite
+  color is green, it will remember in future chats. Memory extraction runs asynchronously, so it doesn't slow responding
+  to the user.
 - `NoteMentionsAdvisor`: Detects when a topic is mentioned in a chat and raises an application event
 
 ## Setup
@@ -42,20 +44,24 @@ Make sure you've pulled the `gemma2:2b` model as follows:
 docker pull ollama/gemma2:2b
 ```
 
+Edit `ChatConfiguration.kt` to use a different Ollama model if you prefer.
+
 ## Running
 
-- Start the server, either in your IDE or with `mvn spring-boot:run`,
+- Start the server, either in your IDE or with `mvn spring-boot:run`
 - Go to `http://localhost:8080` to see the simple chat interface
 
 ## Limitations
 
-This is meant to illustrate the power of Spring AI advisors,
+This is a demo to illustrate the power of Spring AI advisors,
 so it's simplistic.
 
 In particular:
 
-- The `CaptureMemoryAdvisor` works of the latest user message only (athough this is extracted into a strategy function)
+- The `CaptureMemoryAdvisor` works off the latest user message only (although this is extracted into a strategy
+  function)
 - The `NoteMentionsAdvisor` looks for a literal string. This could easily be improved to work with a local model and
   exhibit deeper understanding (e.g. "the user is talking about auto service")
+- The UI is very basic
 
 Contributions welcome.
