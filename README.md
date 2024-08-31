@@ -24,6 +24,14 @@ This project features the following custom advisors:
   to the user.
 - `NoteMentionsAdvisor`: Detects when a topic is mentioned in a chat and raises an application event
 
+This project illustrates two best practices:
+
+- _Externalize your prompts_. Prompts should not be in Kotlin, Java, Python/whatever programming language. They should
+  be externalized so they can be edited easily and potentially shared.
+- _Favor explicit configuration of Spring AI vs relying on starters_. This project uses only the Neo vector store
+  starter, as we want only one vector store. But it explicitly configures the Ollama and Open AI models in an
+  `@Configuration` file. This allows us to mix and switch models easily.
+
 ## Setup
 
 This is a standard Spring Boot project, built with Maven
